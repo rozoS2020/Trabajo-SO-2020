@@ -128,6 +128,12 @@ int otherF(SOCKET sockEscucha,int resInit,string nomb) {
 				}
 
 			}
+			if (string(reciveBuf, 0, resInit) == "descarga_http()") {
+				cout << "--------------------------------------------------------\n";
+				cout << "PROCESO DE DESCARGA DE INTERNET: "<< nomb << endl;
+				resInit = recv(sockCliente, reciveBuf, reciveBufLen, 0);
+				cout << string(reciveBuf, 0, resInit) << endl;
+			}
 			if (string(reciveBuf, 0, resInit) == "chat()") {
 				cout << "EN CHAT CON CLIENTE: "<< nomb<< endl;
 				cout << "--------------------------------------------------------\n";

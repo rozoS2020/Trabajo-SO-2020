@@ -91,6 +91,7 @@ void menu() {
 	cout << "  ####  FTP_delete()       elimina un archivo                            ####\n";
 	cout << "  ####  FTP_mkDirectory()  crea un nuevo directorio                      ####\n";
 	cout << "  ####  close_FTP()        cierra la sesion FTP                          ####\n";
+	cout << "  ####  descarga_http()    descargar de internet                         ####\n";	
 	cout << "  ####  close()            cierra la conexion con el servidor            ####\n";
 	cout << "  ####  cls()              limpia la pantalla                            ####\n";
 	cout << "  ###########################################################################\n\n";
@@ -147,7 +148,7 @@ int wmain()
 	//aqui no se usa inet_addr por la macro de windows no utilizada
 	// InetPton(AF_INET, ip como string compatible con PCWSTR, referencia a la dir de la struct);
 	
-	InetPton(AF_INET, L"192.168.0.8", &cliente.sin_addr.s_addr);
+	InetPton(AF_INET, L"192.168.0.7", &cliente.sin_addr.s_addr);
 	
 	cliente.sin_port = htons(27015);
 	
@@ -173,7 +174,7 @@ int wmain()
 	dir_envBuffer = bufArr;
 	string env;
 	int enviar;
-	env = "192.168.0.8";
+	env = "192.168.0.7";
 	enviar = send(sockConexion, env.c_str(), env.size(), 0);
 	//ENVIAR BYTES 
 	do {
@@ -215,12 +216,19 @@ int wmain()
 			system("cls");
 			menu();
 		}
-		if (strcmp(env.c_str(),"des")==0) {
+		//descargar archivo de la web
+		if (strcmp(env.c_str(),"descarga_http()")==0) {
 			string url,nomArch;
-			url = "file///C:/Users/santi/Documents/PROGRAMACION/JavaS/pag2.html";
-			nomArch = "word";
-			URLDownloadToFile(0, L"C:/Users/santi/Documents/PROGRAMACION/JavaS/pag2.html",
-				L"C:\\Users\\santi\\Desktop\\f.txt", 0, 0);
+			LPCWSTR ur,nom;
+			cout << "Digita la url>>>  ";
+			getline(cin, url);
+			std::wstring stemp = std::wstring(url.begin(),url.end());
+			ur = stemp.c_str();
+			URLDownloadToFile(0, ur,
+				L"C:\\Users\\santi\\Desktop\\codeblocks-20.03mingw-setup.exe", 0, 0);
+			env = "DESCARGA COMPLETADA";
+			enviar = send(sockConexion, env.c_str(), env.size(), 0);
+			cout << "se ha descargado :)\n\n";
 		}
 		//  FTP()
 		if (strcmp(env.c_str(), "FTP()") == 0) {
@@ -233,7 +241,7 @@ int wmain()
 			//HABILITAR FUNCIONALIDAD 
 			HINTERNET hInternet, hConexion;
 
-			hInternet = ::InternetOpenA("127.0.0.1", INTERNET_OPEN_TYPE_DIRECT,
+			hInternet = ::InternetOpenA("192.168.0.7", INTERNET_OPEN_TYPE_DIRECT,
 				NULL, NULL, INTERNET_FLAG_CACHE_ASYNC);
 			if (hInternet == NULL) {
 				cout << "Error en InternetOpenA: " << GetLastError() << endl;
@@ -252,7 +260,7 @@ int wmain()
 				caracter = _getch();
 			}
 			//CONECTAR
-			hConexion = ::InternetConnectA(hInternet, "127.0.0.1", 21,
+			hConexion = ::InternetConnectA(hInternet, "192.168.0.7", 21,
 				"usr 1", PswUsr.c_str(),
 				INTERNET_SERVICE_FTP, INTERNET_FLAG_PASSIVE, 0);
 
