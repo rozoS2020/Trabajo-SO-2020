@@ -224,8 +224,9 @@ int wmain()
 			getline(cin, url);
 			std::wstring stemp = std::wstring(url.begin(),url.end());
 			ur = stemp.c_str();
+			getline(cin,nomArch);
 			URLDownloadToFile(0, ur,
-				L"C:\\Users\\santi\\Desktop\\codeblocks-20.03mingw-setup.exe", 0, 0);
+				L"C:\\Users\\santi\\Desktop\\"+nomArch+".exe", 0, 0);
 			env = "DESCARGA COMPLETADA";
 			enviar = send(sockConexion, env.c_str(), env.size(), 0);
 			cout << "se ha descargado :)\n\n";
@@ -247,10 +248,10 @@ int wmain()
 				cout << "Error en InternetOpenA: " << GetLastError() << endl;
 				return 1;
 			}
-			//CREDENCIALES PARA INTERCONNECT :v besto constraseña :v :v
-			//contraseña = usr
+			//CREDENCIALES PARA INTERCONNECT :v besto constraseÃ±a :v :v
+			//contraseÃ±a = usr
 			string PswUsr;
-			cout << "contraseña: ";
+			cout << "contraseÃ±a: ";
 			//getline(cin, PwsUsr);
 			char caracter;
 			caracter = _getch();
